@@ -1,0 +1,37 @@
+stages:
+    - build
+    - image
+    - deploy
+
+variables:
+    RANCHER_API: https://172.16.6.31:8443/v3/project/c-p2vgr:p-r9p8x/workloads/deployment:c7p-tst01:manage
+
+cache:
+    paths:
+        - dist/*
+
+
+npm_build:
+    stage: build
+    script:
+        - cnpm install
+        - npm run build:tst01
+
+build_image:
+    stage: image
+    script:
+        - tar -cvzf $CI_PROJECT_NAME.tar.gz dist/* --transform s=dist/==
+        - docker build -t r.cn/$CI_PROJECT_PATH/$CI_PROJECT_NAME:$CI_PIPELINE_ID .
+    when: manual
+
+push_image:
+    stage: image
+    script:
+        - docker push r.cn/$CI_PROJECT_PATH/$CI_PROJECT_NAME:$CI_PIPELINE_ID
+    when: manual
+
+deploy:
+    stage: deploy
+    script:
+        - /usr/bin/python /root/cup1.py $RANCHER_API $CI_PROJECT_NAME r.cn/$CI_PROJECT_PATH/$CI_PROJECT_NAME:$CI_PIPELINE_ID
+    when: manual
