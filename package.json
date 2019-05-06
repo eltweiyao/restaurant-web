@@ -7,8 +7,7 @@
     "start": "roadhog server",
     "build": "react-scripts build",
     "build:dev": "cross-env BUILD_MODE=dev roadhog build",
-    "lint": "eslint --ext .js,.jsx src test",
-    "precommit": "npm run lint"
+    "lint": "eslint --ext .js,.jsx src test"
   },
   "engines": {
     "install-node": "6.9.2"
