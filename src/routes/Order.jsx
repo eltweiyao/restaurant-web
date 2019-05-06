@@ -23,6 +23,14 @@ const Order = ({ cloudState, dispatch }) => {
           orders: result
         }
       });
+    },
+    onChange(totalPrice) {
+      dispatch({
+        type: "order/updateState",
+        payload: {
+          totalPrice: Number(totalPrice).toFixed(2)
+        }
+      });
     }
   };
 

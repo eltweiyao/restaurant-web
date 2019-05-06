@@ -25,7 +25,7 @@ const list = ({ loading, dataList, pagination, onPageChange, onEdit }) => {
       key: "materialPrice",
       render: text =>
         typeof text !== "undefined" && (
-          <div style={{ textAlign: "right" }}>
+          <div style={{ textAlign: "left" }}>
             {text.toString() ? Number(text).toFixed(2) : "--"}
           </div>
         )

@@ -7,7 +7,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Form, Input, Modal, Icon, Upload, Button, Select } from "antd";
+import {
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Icon,
+  Upload,
+  Button,
+  Select
+} from "antd";
 import styles from "./Modal.less";
 
 const FormItem = Form.Item;
@@ -218,7 +227,7 @@ const modal = ({
       if (pkMaterial !== undefined) {
         return materials.map(data => {
           if (data.pkMaterial === pkMaterial) {
-            materialPrices.push(data.materialPrice);
+            materialPrices.push("￥" + Number(data.materialPrice).toFixed(2));
             if (counts[index] !== undefined) {
               originalPrice +=
                 parseFloat(counts[index]) * parseFloat(data.materialPrice);
@@ -232,7 +241,7 @@ const modal = ({
       ...getFieldsValue(),
       pkMaterials,
       units: unitNames,
-      originalPrice: originalPrice,
+      originalPrice: Number(originalPrice).toFixed(2),
       materialPrices: materialPrices
     };
     console.log(fields);
@@ -260,10 +269,7 @@ const modal = ({
         required
         key={k}
       >
-        <FormItem
-          hasFeedback
-          className={classnames({ [styles.nameFormItem]: true })}
-        >
+        <FormItem className={classnames({ [styles.nameFormItem]: true })}>
           {getFieldDecorator(`pkMaterials[${k}]`, {
             rules: [
               {
@@ -274,12 +280,13 @@ const modal = ({
                 whitespace: true
               }
             ]
-          })(<Select placeholder="请选择所用物料">{materialOpts}</Select>)}
+          })(
+            <Select placeholder="请选择所用物料" onBlur={handleModalCountFocus}>
+              {materialOpts}
+            </Select>
+          )}
         </FormItem>
-        <FormItem
-          hasFeedback
-          className={classnames({ [styles.countFormItem]: true })}
-        >
+        <FormItem className={classnames({ [styles.countFormItem]: true })}>
           {getFieldDecorator(`counts[${k}]`, {
             rules: [
               {
@@ -292,7 +299,10 @@ const modal = ({
               }
             ]
           })(
-            <Input
+            <InputNumber
+              step={0.01}
+              min={0}
+              max={999.99}
               onFocus={handleModalCountFocus}
               onBlur={handleModalCountFocus}
               style={{ display: "inline-block", width: "100%" }}
@@ -311,7 +321,6 @@ const modal = ({
           <FormItem>
             {getFieldDecorator(`materialPrices[${k}]`, {})(
               <Input
-                prefix="￥"
                 onFocus={handleModalCountFocus}
                 disabled
                 className={classnames({ [styles.formItemInput]: true })}
@@ -343,7 +352,7 @@ const modal = ({
     <Modal {...modalProps}>
       {title === "修改所用物料" ? (
         <Form layout="vertical">
-          <FormItem label="物料名称" hasFeedback {...formItemLayout}>
+          <FormItem label="物料名称" {...formItemLayout}>
             {getFieldDecorator("pkMaterial", {
               initialValue: item.pkMaterial,
               rules: [
@@ -361,7 +370,7 @@ const modal = ({
               </Select>
             )}
           </FormItem>
-          <FormItem label=" 物料数量" hasFeedback {...formItemLayout}>
+          <FormItem label=" 物料数量" {...formItemLayout}>
             {getFieldDecorator("materialCount", {
               initialValue: item.materialCount,
               rules: [
@@ -374,9 +383,9 @@ const modal = ({
                   message: "请输入正数，整数不可多于三位，小数不可多于两位"
                 }
               ]
-            })(<Input />)}
+            })(<InputNumber step={0.01} min={0} />)}
           </FormItem>
-          <FormItem label="物料单位" hasFeedback {...formItemLayout}>
+          <FormItem label="物料单位" {...formItemLayout}>
             {getFieldDecorator("unitName", {
               initialValue: item.unitName,
               rules: [
@@ -387,19 +396,9 @@ const modal = ({
               ]
             })(<Input disabled />)}
           </FormItem>
-          <FormItem label="物料单价" hasFeedback {...formItemLayout}>
+          <FormItem label="物料单价" {...formItemLayout}>
             {getFieldDecorator("materialPrice", {
-              initialValue: item.materialPrice,
-              rules: [
-                {
-                  required: true,
-                  message: "请选择物料"
-                },
-                {
-                  pattern: /^(\d{1,3}(\.\d{1,2})?)$/,
-                  message: "请输入正数，整数不可多于三位，小数不可多于两位"
-                }
-              ]
+              initialValue: item.materialPrice
             })(<Input disabled />)}
           </FormItem>
         </Form>
@@ -448,12 +447,16 @@ const modal = ({
                   message: "请输入售价"
                 },
                 {
-                  pattern: /^(\d{1,3}(\.\d{1,2})?)$/,
-                  message: "请输入正数，整数不可多于三位，小数不可多于两位"
+                  pattern: /^(\d{1,4}(\.\d{1,2})?)$/,
+                  message: "请输入正数，整数不可多于四位，小数不可多于两位"
                 }
               ]
             })(
-              <Input
+              <InputNumber
+                style={{ width: "100%" }}
+                step={0.01}
+                min={0}
+                max={999.99}
                 onBlur={handleModalCountFocus}
                 onFocus={handleModalCountFocus}
               />
@@ -586,11 +589,11 @@ const modal = ({
                   message: "请输入售价"
                 },
                 {
-                  pattern: /^(\d{1,3}(\.\d{1,2})?)$/,
-                  message: "请输入正数，整数不可多于三位，小数不可多于两位"
+                  pattern: /^(\d{1,4}(\.\d{1,2})?)$/,
+                  message: "请输入正数，整数不可多于四位，小数不可多于两位"
                 }
               ]
-            })(<Input />)}
+            })(<InputNumber step={0.01} min={0} max={9999.99} />)}
           </FormItem>
           <FormItem label="菜品图片" {...formItemLayout}>
             {getFieldDecorator("imageUrl", {

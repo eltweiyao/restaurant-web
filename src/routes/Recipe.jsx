@@ -27,13 +27,15 @@ const Recipe = ({ cloudState, dispatch }) => {
     previewImage,
     previewVisible,
     buttonVisible,
-    imageUrl
+    imageUrl,
+    accountType
   } = cloudState.recipe;
   const loading = cloudState.loading.effects;
   const searchProps = {
     searchData,
     selectedIds,
     startValue,
+    accountType,
     onSearch(values) {
       dispatch({
         type: "recipe/query",
@@ -85,6 +87,7 @@ const Recipe = ({ cloudState, dispatch }) => {
   const listProps = {
     loading: loading["recipe/query"],
     dataList,
+    accountType,
     pagination,
     onPageChange(page) {
       dispatch({
@@ -120,7 +123,6 @@ const Recipe = ({ cloudState, dispatch }) => {
       });
     },
     onEditRecipeName(item) {
-      console.log("item", item);
       dispatch({
         type: "recipe/showModal",
         payload: {

@@ -15,6 +15,7 @@ const search = ({
   onSearch,
   onReset,
   onAdd,
+  accountType,
   form: { resetFields, getFieldDecorator, getFieldsValue }
 }) => {
   const handleSearch = () => {
@@ -60,19 +61,23 @@ const search = ({
             <Button onClick={handleReset}>清除条件</Button>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <FormItem>
-              <Button
-                type="default"
-                style={{ margin: "0" }}
-                onClick={() => onAdd()}
-              >
-                新增配方
-              </Button>
-            </FormItem>
-          </Col>
-        </Row>
+        {accountType === "1" ? (
+          <Row>
+            <Col>
+              <FormItem>
+                <Button
+                  type="default"
+                  style={{ margin: "0" }}
+                  onClick={() => onAdd()}
+                >
+                  新增配方
+                </Button>
+              </FormItem>
+            </Col>
+          </Row>
+        ) : (
+          ""
+        )}
       </Form>
     </div>
   );

@@ -1,9 +1,8 @@
 import modelExtend from "dva-model-extend";
 import { routerRedux } from "dva/router";
 import { parse } from "qs";
-import { message } from "antd";
-import { enter, inquireMenu } from "../services/login";
-import { saveSession, getSession, toStr } from "../utils/";
+import { enter } from "../services/login";
+import { saveSession, toStr } from "../utils/";
 import { model } from "./common";
 
 export default modelExtend(model, {
@@ -49,17 +48,25 @@ export default modelExtend(model, {
       }
     },
     *queryMenu({ payload }, { put }) {
-      console.log("payla", payload);
       const { accountType } = payload;
       const userData = [
         {
           id: "orderManager",
           bpid: "",
           mpid: "",
-          name: "收银管理",
-          icon: "bell",
+          name: "点菜收银",
+          icon: "pay-circle",
           route: "/order",
           menu_sort: "1"
+        },
+        {
+          id: "dishManager",
+          bpid: "",
+          mpid: "",
+          name: "配方管理",
+          icon: "book",
+          route: "/recipe",
+          menu_sort: "2"
         }
       ];
       const adminData = [
@@ -161,8 +168,9 @@ export default modelExtend(model, {
       // 把菜单存入session中
       saveSession("menuData", toStr(menuData));
       saveSession("permissionsData", toStr(permissionsData));
+      saveSession("accountType", accountType);
       yield put({
-        type: "pm/updateState",
+        type: "restaurant/updateState",
         payload: {
           menu: menuData,
           permissions: {

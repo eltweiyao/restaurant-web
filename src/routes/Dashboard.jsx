@@ -75,7 +75,8 @@ const Dashboard = ({ state, dispatch }) => {
     line: [
       { name: "营业额", dataKey: "totalPrice", stroke: "#8884d8" },
       { name: "利润", dataKey: "totalBonus", stroke: "#82ca9d" }
-    ]
+    ],
+    size: active
   };
   const dishFanReportProps = {
     data: dishFanReport || [],

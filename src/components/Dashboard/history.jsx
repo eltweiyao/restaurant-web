@@ -15,11 +15,11 @@ import {
 } from "recharts";
 import ChartCard from "./chartCard";
 
-const history = ({ data, line, title }) => (
+const history = ({ data, line, title, size }) => (
   <ChartCard title={title}>
     <ResponsiveContainer height={300}>
       <LineChart data={data}>
-        <XAxis dataKey="time" />
+        <XAxis interval={size === 4 ? 1 : "auto"} dataKey="time" />
         <YAxis />
         <Tooltip />
         <Legend verticalAlign="top" />

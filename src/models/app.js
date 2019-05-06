@@ -23,7 +23,7 @@ const winWidth =
   document.body.clientWidth;
 
 export default modelExtend(model, {
-  namespace: "pm",
+  namespace: "restaurant",
   state: {
     //  isLogin: false,
     permissions: {
@@ -109,7 +109,6 @@ export default modelExtend(model, {
     },
     // 登出系统
     *logOut({ payload }, { call, put }) {
-      message.success("退出登录成功！");
       delSession("user");
       delSession("menuData");
       delSession("permissionsData");

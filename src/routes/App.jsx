@@ -15,7 +15,7 @@ const { prefix, openPages } = config;
 const { Header, Bread, Footer, Sider, styles } = Layout;
 let lastHref;
 
-const App = ({ children, dispatch, pm, loading, location }) => {
+const App = ({ children, dispatch, restaurant, loading, location }) => {
   const {
     user,
     siderFold,
@@ -25,7 +25,7 @@ const App = ({ children, dispatch, pm, loading, location }) => {
     navOpenKeys,
     menu,
     permissions
-  } = pm;
+  } = restaurant;
   let { pathname } = location;
   pathname = pathname.startsWith("/") ? pathname : `/${pathname}`;
   const { logo } = config;
@@ -57,22 +57,22 @@ const App = ({ children, dispatch, pm, loading, location }) => {
     menuPopoverVisible,
     navOpenKeys,
     checkLogin() {
-      dispatch({ type: "pm/checkLogin" });
+      dispatch({ type: "restaurant/checkLogin" });
     },
     switchMenuPopover() {
-      dispatch({ type: "pm/switchMenuPopver" });
+      dispatch({ type: "restaurant/switchMenuPopver" });
     },
     switchSider() {
-      dispatch({ type: "pm/switchSider" });
+      dispatch({ type: "restaurant/switchSider" });
     },
     changeOpenKeys(openKeys) {
       dispatch({
-        type: "pm/handleNavOpenKeys",
+        type: "restaurant/handleNavOpenKeys",
         payload: { navOpenKeys: openKeys }
       });
     },
     logout() {
-      dispatch({ type: "pm/logOut" });
+      dispatch({ type: "restaurant/logOut" });
     }
   };
 
@@ -82,7 +82,7 @@ const App = ({ children, dispatch, pm, loading, location }) => {
     darkTheme,
     navOpenKeys,
     changeTheme() {
-      dispatch({ type: "pm/switchTheme" });
+      dispatch({ type: "restaurant/switchTheme" });
     },
     changeOpenKeys(openKeys) {
       window.localStorage.setItem(
@@ -90,7 +90,7 @@ const App = ({ children, dispatch, pm, loading, location }) => {
         JSON.stringify(openKeys)
       );
       dispatch({
-        type: "pm/handleNavOpenKeys",
+        type: "restaurant/handleNavOpenKeys",
         payload: { navOpenKeys: openKeys }
       });
     }
@@ -148,9 +148,11 @@ const App = ({ children, dispatch, pm, loading, location }) => {
 App.propTypes = {
   children: PropTypes.element.isRequired,
   location: PropTypes.object,
-  pm: PropTypes.object,
+  restaurant: PropTypes.object,
   loading: PropTypes.object,
   dispatch: PropTypes.func
 };
 
-export default connect(({ pm, loading }) => ({ pm, loading }))(App);
+export default connect(({ restaurant, loading }) => ({ restaurant, loading }))(
+  App
+);

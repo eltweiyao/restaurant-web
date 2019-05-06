@@ -5,12 +5,36 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Input, Button, Tabs, Card, Affix } from "antd";
+import styles from "../../common/common.less";
+import {
+  Form,
+  Input,
+  InputNumber,
+  Button,
+  Tabs,
+  Card,
+  Affix,
+  Icon
+} from "antd";
 
 const { TabPane } = Tabs;
 const { Meta } = Card;
 const { Text } = Input;
-const list = ({ dataList, result, totalPrice, onConfirm }) => {
+const FormItem = Form.Item;
+const list = ({
+  dataList,
+  result,
+  totalPrice,
+  onConfirm,
+  onChange,
+  form: {
+    getFieldDecorator,
+    validateFields,
+    getFieldsValue,
+    getFieldValue,
+    setFieldsValue
+  }
+}) => {
   const cardStyle = {
     width: "180px",
     height: "280px",
@@ -41,8 +65,8 @@ const list = ({ dataList, result, totalPrice, onConfirm }) => {
     onConfirm(data);
     for (var key in result) {
       document.getElementById(key).value = 0;
-      document.getElementById("totalPrice").value = 0;
     }
+    setFieldsValue({ totalPrice: 0 });
   };
 
   const loopCard = data =>
@@ -55,14 +79,16 @@ const list = ({ dataList, result, totalPrice, onConfirm }) => {
           shape="circle"
           icon="minus"
           onClick={() => {
+            count = Number(document.getElementById(item.pkRecipe).value);
+            totalPrice = Number(getFieldValue("totalPrice")).toFixed(2);
             if (count <= 0) {
               count = 0;
             } else {
               count = count - 1;
-              totalPrice = totalPrice - item.recipePrice;
+              totalPrice = totalPrice - Number(item.recipePrice);
             }
-            document.getElementById(item.pkRecipe).value = count;
-            document.getElementById("totalPrice").value = totalPrice;
+            document.getElementById(item.pkRecipe).value = Number(count);
+            setFieldsValue({ totalPrice: Number(totalPrice).toFixed(2) });
             data = {
               pkRecipe: item.pkRecipe,
               recipeName: item.recipeName,
@@ -85,14 +111,16 @@ const list = ({ dataList, result, totalPrice, onConfirm }) => {
           shape="circle"
           icon="plus"
           onClick={() => {
+            count = Number(document.getElementById(item.pkRecipe).value);
+            totalPrice = Number(getFieldValue("totalPrice"));
             if (count >= 99) {
               count = 99;
             } else {
               count = count + 1;
-              totalPrice = totalPrice + item.recipePrice;
+              totalPrice = totalPrice + Number(item.recipePrice);
             }
-            document.getElementById(item.pkRecipe).value = count;
-            document.getElementById("totalPrice").value = totalPrice;
+            document.getElementById(item.pkRecipe).value = Number(count);
+            setFieldsValue({ totalPrice: Number(totalPrice).toFixed(2) });
             data = {
               pkRecipe: item.pkRecipe,
               recipeName: item.recipeName,
@@ -156,18 +184,28 @@ const list = ({ dataList, result, totalPrice, onConfirm }) => {
         }}
       >
         <Affix offsetBottom={150} className="affix">
-          <Input
-            id="totalPrice"
-            style={{
-              width: "200px"
-            }}
-            type={Text}
-            disabled
-            defaultValue="0"
-          />
-          <Button type="primary" style={{ marginLeft: 10 }} onClick={handleOk}>
-            结算
-          </Button>
+          <Form layout="horizontal">
+            <FormItem>
+              {getFieldDecorator("totalPrice", {
+                initialValue: totalPrice
+              })(
+                <InputNumber
+                  className={styles.orderInput}
+                  precision={2}
+                  disabled
+                  formatter={value => `应收：￥ ${value}`}
+                />
+              )}
+            </FormItem>
+
+            <Button
+              type="primary"
+              style={{ marginLeft: 10 }}
+              onClick={handleOk}
+            >
+              结算
+            </Button>
+          </Form>
         </Affix>
       </div>
     </div>

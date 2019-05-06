@@ -59,7 +59,6 @@ export default modelExtend(pageModel, {
   effects: {
     // 获取列表
     *query({ payload }, { call, put, select }) {
-      console.log("pkCompany", getSession("pkCompany"));
       const paginationOld = yield select(state => state.recipe.pagination);
       const response = yield call(inquire, payload);
       const { data, code, page } = response.data;
@@ -68,6 +67,7 @@ export default modelExtend(pageModel, {
           type: "querySuccess",
           payload: {
             dataList: data || [],
+            accountType: getSession("accountType") || 2,
             pagination: {
               ...paginationOld,
               total: page.total || 0,
