@@ -78,8 +78,8 @@ const modal = ({
     });
   return (
     <Modal {...modalProps}>
-      <Form>
-        <FormItem {...formLayout} label="名称：">
+      <Form layout="horizontal">
+        <FormItem {...formLayout} label="名称">
           {getFieldDecorator("menuName", {
             initialValue: item.menuName,
             rules: [
@@ -92,8 +92,8 @@ const modal = ({
                 message: "不能只输入空格"
               },
               {
-                max: 5,
-                message: "最大输入5个字符"
+                max: 20,
+                message: "最多输入20个字"
               }
             ]
           })(
@@ -101,7 +101,7 @@ const modal = ({
               type={Text}
               className="font12"
               style={{ width: "100%" }}
-              placeholder="限制50字以内"
+              placeholder="请输入菜谱名称"
             />
           )}
         </FormItem>
@@ -111,7 +111,7 @@ const modal = ({
             rules: [
               {
                 required: true,
-                message: "请选择单位"
+                message: "请选择菜品"
               }
             ]
           })(
@@ -119,7 +119,7 @@ const modal = ({
               dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
               treeCheckable="true"
               style={{ width: "100%" }}
-              placeholder="请选择"
+              placeholder="请选择菜品"
             >
               {loopTree(menuItems === undefined ? [] : menuItems)}
             </TreeSelect>

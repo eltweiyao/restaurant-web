@@ -26,7 +26,7 @@ const page = ({
         <span>{config.name}</span>
       </div>
       <Form>
-        <FormItem hasFeedback>
+        <FormItem>
           {getFieldDecorator("username", {
             initialValue: username,
             rules: [
@@ -43,7 +43,7 @@ const page = ({
             />
           )}
         </FormItem>
-        <FormItem hasFeedback>
+        <FormItem>
           {getFieldDecorator("password", {
             initialValue: password,
             rules: [

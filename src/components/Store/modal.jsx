@@ -64,8 +64,8 @@ const modal = ({
     ));
   return (
     <Modal {...modalProps}>
-      <Form>
-        <FormItem {...formLayout} label="名称：">
+      <Form layout="horizontal">
+        <FormItem {...formLayout} label="名称">
           {getFieldDecorator("storeName", {
             initialValue: item.storeName,
             rules: [
@@ -78,8 +78,8 @@ const modal = ({
                 message: "不能只输入空格"
               },
               {
-                max: 5,
-                message: "最大输入5个字符"
+                max: 20,
+                message: "最多输入20个字"
               }
             ]
           })(
@@ -87,11 +87,11 @@ const modal = ({
               type={Text}
               className="font12"
               style={{ width: "100%" }}
-              placeholder="限制50字以内"
+              placeholder="请输入门店名称"
             />
           )}
         </FormItem>
-        <FormItem label="门店位置：" hasFeedback {...formLayout}>
+        <FormItem label="门店位置"  {...formLayout}>
           {getFieldDecorator("storePosition", {
             initialValue:
               title === "新增门店"
@@ -105,7 +105,7 @@ const modal = ({
             ]
           })(<Cascader options={city} placeholder="请选择门店位置" />)}
         </FormItem>
-        <FormItem label="详细地址：" hasFeedback {...formLayout}>
+        <FormItem label="详细地址"  {...formLayout}>
           {getFieldDecorator("detailAddress", {
             initialValue: item.detailAddress,
             rules: [
@@ -131,7 +131,7 @@ const modal = ({
             />
           )}
         </FormItem>
-        <FormItem {...formLayout} label="联系人：">
+        <FormItem {...formLayout} label="联系人">
           {getFieldDecorator("contactName", {
             initialValue: item.contactName,
             rules: [
@@ -157,7 +157,7 @@ const modal = ({
             />
           )}
         </FormItem>
-        <FormItem {...formLayout} label="菜谱：">
+        <FormItem {...formLayout} label="菜谱">
           {getFieldDecorator("pkMenu", {
             initialValue: item.pkMenu,
             rules: [
@@ -168,7 +168,7 @@ const modal = ({
             ]
           })(<Select placeholder="请选择所用菜谱">{loopMenu(menus)}</Select>)}
         </FormItem>
-        <FormItem {...formLayout} label="门店账号：">
+        <FormItem {...formLayout} label="门店账号">
           {getFieldDecorator("account", {
             initialValue: item.account,
             rules: [
@@ -194,7 +194,7 @@ const modal = ({
             />
           )}
         </FormItem>
-        <FormItem {...formLayout} label="密码：">
+        <FormItem {...formLayout} label="密码">
           {getFieldDecorator("password", {
             initialValue: item.password,
             rules: [

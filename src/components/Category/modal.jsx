@@ -51,8 +51,8 @@ const modal = ({
   };
   return (
     <Modal {...modalProps}>
-      <Form>
-        <FormItem {...formLayout} label="类别名称：">
+      <Form layout="horizontal">
+        <FormItem {...formLayout} label="类别名称">
           {getFieldDecorator("categoryName", {
             initialValue: item.categoryName,
             rules: [
@@ -65,11 +65,11 @@ const modal = ({
                 message: "不能只输入空格"
               },
               {
-                max: 5,
-                message: "最大输入5个字符"
+                max: 20,
+                message: "最多输入20个字"
               }
             ]
-          })(<Input type={Text} placeholder="限制5字以内" />)}
+          })(<Input type={Text} placeholder="请输入类别名称" />)}
         </FormItem>
       </Form>
     </Modal>

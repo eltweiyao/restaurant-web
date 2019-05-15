@@ -5,7 +5,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { Modal, Form, Select, Input } from "antd";
+import { Modal, Form, Select, Input, InputNumber } from "antd";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -59,8 +59,8 @@ const modal = ({
     ));
   return (
     <Modal {...modalProps}>
-      <Form>
-        <FormItem {...formLayout} label="名称：">
+      <Form layout="horizontal">
+        <FormItem {...formLayout} label="名称">
           {getFieldDecorator("materialName", {
             initialValue: item.materialName,
             rules: [
@@ -73,8 +73,8 @@ const modal = ({
                 message: "不能只输入空格"
               },
               {
-                max: 5,
-                message: "最大输入5个字符"
+                max: 20,
+                message: "最多输入20个字"
               }
             ]
           })(
@@ -82,7 +82,7 @@ const modal = ({
               type={Text}
               className="font12"
               style={{ width: "100%" }}
-              placeholder="限制50字以内"
+              placeholder="请输入物料名称"
             />
           )}
         </FormItem>
@@ -96,7 +96,7 @@ const modal = ({
               }
             ]
           })(
-            <Select style={{ width: "100%" }} placeholder="请选择">
+            <Select style={{ width: "100%" }} placeholder="请选择单位">
               {loopState(materialUnits === undefined ? [] : materialUnits)}
             </Select>
           )}
@@ -110,15 +110,18 @@ const modal = ({
                 message: "输入金额"
               },
               {
-                pattern: /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/,
-                message: "金额格式有误"
+                pattern: /^(\d{0,2}(\.\d{1,2})?)$/,
+                message: "请输入正数，整数不可多于两位，小数不可多于两位"
               }
             ]
           })(
-            <Input
+            <InputNumber
               className="font12"
               style={{ width: "100%" }}
-              placeholder="单价"
+              step={0.01}
+              min={0}
+              max={99.99}
+              placeholder="请输入单价"
             />
           )}
         </FormItem>

@@ -51,8 +51,8 @@ const modal = ({
   };
   return (
     <Modal {...modalProps}>
-      <Form>
-        <FormItem {...formLayout} label="单位名称：">
+      <Form layout="horizontal">
+        <FormItem {...formLayout} label="单位名称">
           {getFieldDecorator("unitName", {
             rules: [
               {
@@ -65,10 +65,10 @@ const modal = ({
               },
               {
                 max: 5,
-                message: "最大输入5个字符"
+                message: "最多输入5个字"
               }
             ]
-          })(<Input type={Text} placeholder="限制5字以内" />)}
+          })(<Input type={Text} placeholder="请输入单位名称" />)}
         </FormItem>
       </Form>
     </Modal>

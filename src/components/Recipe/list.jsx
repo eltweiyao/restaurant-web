@@ -5,8 +5,8 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { saveSession, getSession, toStr } from "../../utils/";
-import { Table, Popconfirm, Avatar } from "antd";
+import { Table, Popconfirm, Avatar, Tooltip } from "antd";
+import styles from "./List.less";
 
 const list = ({
   loading,
@@ -22,12 +22,7 @@ const list = ({
 }) => {
   console.log("accountType", accountType);
   const expandedRowRender = record => {
-    /*
-      NOTE:
-      这里能够取到当前点击的是哪个配方，也能够得到所有的配方与物料关联信息，因此没有再调用后台接口
-      而是直接由前端根据所有信息，判断哪一条信息是与当前配方有关的物料信息，将它过滤到recipeDetail中
-     */
-    console.log("aaa", accountType);
+
     const columns =
       accountType === "1"
         ? [
@@ -39,7 +34,11 @@ const list = ({
             {
               title: "物料用量",
               dataIndex: "materialCount",
-              key: "materialCount"
+              key: "materialCount",
+              render: text =>
+                typeof text !== "undefined" && (
+                  <div>{text.toString() ? Number(text).toFixed(2) : "--"}</div>
+                )
             },
             { title: "物料单位", dataIndex: "unitName", key: "unitName" },
             {
@@ -85,18 +84,13 @@ const list = ({
             {
               title: "物料用量",
               dataIndex: "materialCount",
-              key: "materialCount"
-            },
-            { title: "物料单位", dataIndex: "unitName", key: "unitName" },
-            {
-              title: "物料单价",
-              dataIndex: "materialPrice",
-              key: "materialPrice",
+              key: "materialCount",
               render: text =>
                 typeof text !== "undefined" && (
                   <div>{text.toString() ? Number(text).toFixed(2) : "--"}</div>
                 )
-            }
+            },
+            { title: "物料单位", dataIndex: "unitName", key: "unitName" }
           ];
     return (
       <Table
@@ -152,6 +146,19 @@ const list = ({
             render: text =>
               typeof text !== "undefined" && (
                 <div>{text.toString() ? Number(text).toFixed(2) : "--"}</div>
+              )
+          },
+          {
+            title: "备注",
+            dataIndex: "remark",
+            key: "remark",
+            render: text =>
+              typeof text !== "undefined" && (
+                <div>
+                  <Tooltip title={text}>
+                    <span className={styles.remark}>{text}</span>
+                  </Tooltip>
+              </div>
               )
           },
           {
@@ -212,21 +219,25 @@ const list = ({
             key: "categoryName"
           },
           {
-            title: "成本价",
-            dataIndex: "originalPrice",
-            key: "originalPrice",
-            render: text =>
-              typeof text !== "undefined" && (
-                <div>{text.toString() ? Number(text).toFixed(2) : "--"}</div>
-              )
-          },
-          {
             title: "在售价",
             dataIndex: "recipePrice",
             key: "recipePrice",
             render: text =>
               typeof text !== "undefined" && (
                 <div>{text.toString() ? Number(text).toFixed(2) : "--"}</div>
+              )
+          },
+          {
+            title: "备注",
+            dataIndex: "remark",
+            key: "remark",
+            render: text =>
+              typeof text !== "undefined" && (
+                <div>
+                  <Tooltip title={text}>
+                    <span className={styles.remark}>{text}</span>
+                  </Tooltip>
+              </div>
               )
           }
         ];

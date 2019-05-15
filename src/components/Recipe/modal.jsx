@@ -20,6 +20,7 @@ import {
 import styles from "./Modal.less";
 
 const FormItem = Form.Item;
+const {TextArea} = Input; 
 const Option = Select.Option;
 
 const formItemLayout = {
@@ -84,7 +85,8 @@ const modal = ({
           recipePrice,
           recipeName,
           pkCategory,
-          materialPrices
+          materialPrices,
+          remark
         } = getFieldsValue();
         const materials = pkMaterials.map((pkMaterial, index) => {
           return {
@@ -99,16 +101,18 @@ const modal = ({
           pkCategory: pkCategory,
           imageUrl: imageUrl,
           recipeName: recipeName,
-          materials: materials
+          materials: materials,
+          remark:remark
         };
       } else if (title === "修改菜品信息") {
-        const { recipeName, recipePrice, pkCategory } = getFieldsValue();
+        const { recipeName, recipePrice, pkCategory, remark } = getFieldsValue();
         params = {
           pkRecipe: item.pkRecipe,
           imageUrl: item.imageUrl,
           recipeName: recipeName,
           recipePrice: recipePrice,
-          pkCategory: pkCategory
+          pkCategory: pkCategory,
+          remark: remark
         };
       } else if (title === "修改所用物料") {
         const data = {
@@ -351,8 +355,8 @@ const modal = ({
     // 创建新配方Modal
     <Modal {...modalProps}>
       {title === "修改所用物料" ? (
-        <Form layout="vertical">
-          <FormItem label="物料名称" {...formItemLayout}>
+        <Form layout="horizontal">
+          <FormItem required label="物料名称" {...formItemLayout}>
             {getFieldDecorator("pkMaterial", {
               initialValue: item.pkMaterial,
               rules: [
@@ -370,13 +374,13 @@ const modal = ({
               </Select>
             )}
           </FormItem>
-          <FormItem label=" 物料数量" {...formItemLayout}>
+          <FormItem required label="物料用量" {...formItemLayout}>
             {getFieldDecorator("materialCount", {
               initialValue: item.materialCount,
               rules: [
                 {
                   required: true,
-                  message: "请选择物料"
+                  message: "请输入物料用量"
                 },
                 {
                   pattern: /^(\d{1,3}(\.\d{1,2})?)$/,
@@ -404,17 +408,32 @@ const modal = ({
         </Form>
       ) : title === "新增配方" ? (
         <Form layout="horizontal">
-          <FormItem required label="配方名称" hasFeedback {...formItemLayout}>
+          <FormItem required label="配方名称" {...formItemLayout}>
             {getFieldDecorator("recipeName", {
-              initialValue: item.recipeName
+              initialValue: item.recipeName,
+              rules: [
+                {
+                  required: true,
+                  message: "请输入配方名称"
+                },
+                {
+                  whitespace: true,
+                  message: "不能只输入空格"
+                },
+                {
+                  max: 20,
+                  message: "最多输入20个字"
+                }
+              ]
             })(
               <Input
+                placeholder="请输入配方名称"
                 onBlur={handleModalCountFocus}
                 onFocus={handleModalCountFocus}
               />
             )}
           </FormItem>
-          <FormItem label="类别名称" hasFeedback {...formItemLayout}>
+          <FormItem label="菜品类别" {...formItemLayout}>
             {getFieldDecorator("pkCategory", {
               initialValue: item.pkCategory,
               rules: [
@@ -432,13 +451,12 @@ const modal = ({
               </Select>
             )}
           </FormItem>
-
-          <FormItem required label="菜品成本价" {...formItemLayout}>
+          <FormItem label="菜品成本价" {...formItemLayout}>
             {getFieldDecorator("originalPrice", {
               initialValue: item.originalPrice
-            })(<Input disabled />)}
+            })(<Input placeholder="请设置原料及用量" disabled />)}
           </FormItem>
-          <FormItem required label="菜品售价" hasFeedback {...formItemLayout}>
+          <FormItem required label="菜品售价" {...formItemLayout}>
             {getFieldDecorator("recipePrice", {
               initialValue: item.recipePrice,
               rules: [
@@ -453,6 +471,7 @@ const modal = ({
               ]
             })(
               <InputNumber
+                placeholder="请输入菜品售价"
                 style={{ width: "100%" }}
                 step={0.01}
                 min={0}
@@ -461,6 +480,19 @@ const modal = ({
                 onFocus={handleModalCountFocus}
               />
             )}
+          </FormItem>
+          <FormItem label="备注" {...formItemLayout}>
+          {getFieldDecorator("remark", {
+            initialValue: item.remark,
+            rules: [
+              {
+                max: 200,
+                message:"最多输入200个字"
+              }
+            ]
+          })(
+            <TextArea placeholder="请输入备注" />
+          )}
           </FormItem>
           <FormItem label="菜品图片" {...formItemLayout}>
             {getFieldDecorator("imageUrl", {
@@ -519,7 +551,7 @@ const modal = ({
         </Form>
       ) : title === "添加所用物料" ? (
         <Form layout="horizontal">
-          <FormItem label="配方名称" hasFeedback {...formItemLayout}>
+          <FormItem label="配方名称"  {...formItemLayout}>
             {getFieldDecorator("recipeName", {
               initialValue: item.recipeName
             })(<Input disabled />)}
@@ -551,18 +583,26 @@ const modal = ({
         </Form>
       ) : title === "修改菜品信息" ? (
         <Form layout="horizontal">
-          <FormItem label="配方名称" hasFeedback {...formItemLayout}>
+          <FormItem label="配方名称"  {...formItemLayout}>
             {getFieldDecorator("recipeName", {
               initialValue: item.recipeName,
               rules: [
                 {
                   required: true,
                   message: "请输入配方名称"
+                },
+                {
+                  whitespace: true,
+                  message: "不能只输入空格"
+                },
+                {
+                  max: 20,
+                  message: "最多输入20个字"
                 }
               ]
-            })(<Input />)}
+            })(<Input placeholder="请输入配方名称" />)}
           </FormItem>
-          <FormItem label="类别名称" hasFeedback {...formItemLayout}>
+          <FormItem label="类别名称"  {...formItemLayout}>
             {getFieldDecorator("pkCategory", {
               initialValue: item.pkCategory,
               rules: [
@@ -580,7 +620,7 @@ const modal = ({
               </Select>
             )}
           </FormItem>
-          <FormItem label="菜品售价" hasFeedback {...formItemLayout}>
+          <FormItem label="菜品售价"  {...formItemLayout}>
             {getFieldDecorator("recipePrice", {
               initialValue: item.recipePrice,
               rules: [
@@ -593,7 +633,20 @@ const modal = ({
                   message: "请输入正数，整数不可多于四位，小数不可多于两位"
                 }
               ]
-            })(<InputNumber step={0.01} min={0} max={9999.99} />)}
+            })(<InputNumber style={{ width: "100%" }} placeholder="请输入菜品售价" step={0.01} min={0} max={9999.99} />)}
+          </FormItem>
+          <FormItem label="备注" {...formItemLayout}>
+          {getFieldDecorator("remark", {
+            initialValue: item.remark,
+            rules: [
+              {
+                max: 200,
+                message:"最多输入200个字"
+              }
+            ]
+          })(
+            <TextArea placeholder="请输入备注" />
+          )}
           </FormItem>
           <FormItem label="菜品图片" {...formItemLayout}>
             {getFieldDecorator("imageUrl", {

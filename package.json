@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "start": "roadhog server",
-    "build": "react-scripts build",
-    "build:dev": "cross-env BUILD_MODE=dev roadhog build",
+    "build": "roadhog build",
     "lint": "eslint --ext .js,.jsx src test"
   },
   "engines": {

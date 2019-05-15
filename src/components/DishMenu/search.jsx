@@ -31,7 +31,7 @@ const search = ({
     <div className="components-search search">
       <Form layout="inline">
         <Row>
-          <Col>
+          <Col span={8} xxl={6}>
             <FormItem label="菜谱名称">
               {getFieldDecorator("menuName", {
                 initialValue: searchData.menuName

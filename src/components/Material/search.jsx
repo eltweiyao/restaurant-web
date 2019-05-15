@@ -32,7 +32,7 @@ const search = ({
       <Form layout="inline">
         <Row>
           <Col span={8} xxl={6}>
-            <FormItem label="物料名称">
+            <FormItem label="物料名称：">
               {getFieldDecorator("materialName", {
                 initialValue: searchData.materialName
               })(
