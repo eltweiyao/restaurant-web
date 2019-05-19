@@ -26,6 +26,7 @@ const modal = ({
       const formValues = {
         ...getFieldsValue()
       };
+
       const data = {
         ...getFieldsValue(),
         storePosition: formValues.storePosition.join("-")

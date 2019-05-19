@@ -62,7 +62,7 @@ const list = ({ loading, dataList, pagination, onPageChange, onEdit }) => {
         bordered
         columns={columns}
         dataSource={dataList}
-        rowKey={item => item.pkMenu}
+        rowKey={item => item.pkStore}
         pagination={pagination}
         onChange={onPageChange}
         loading={loading}

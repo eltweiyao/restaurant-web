@@ -23,9 +23,10 @@ const search = ({
       const formValues = {
         ...getFieldsValue()
       };
+      var storePosition = formValues ? formValues.storePosition || "" : "";
       const data = {
         ...getFieldsValue(),
-        storePosition: formValues.storePosition.join("-")
+        storePosition: storePosition.join("-")
       };
       if (!errors) {
         onSearch(data);
