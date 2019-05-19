@@ -24,9 +24,8 @@ const FormItem = Form.Item;
 const list = ({
   dataList,
   result,
-  totalPrice,
+  price,
   onConfirm,
-  onChange,
   form: {
     getFieldDecorator,
     validateFields,
@@ -79,16 +78,16 @@ const list = ({
           shape="circle"
           icon="minus"
           onClick={() => {
-            count = Number(document.getElementById(item.pkRecipe).value);
-            totalPrice = Number(getFieldValue("totalPrice")).toFixed(2);
+            const {totalPrice} = getFieldsValue();
+            count = result[item.pkRecipe] ? (result[item.pkRecipe].recipeCount || 0) : 0;
+            price = Number(totalPrice).toFixed(2);
             if (count <= 0) {
               count = 0;
             } else {
               count = count - 1;
-              totalPrice = totalPrice - Number(item.recipePrice);
+              price = Number(price) - Number(item.recipePrice);
             }
-            document.getElementById(item.pkRecipe).value = Number(count);
-            setFieldsValue({ totalPrice: Number(totalPrice).toFixed(2) });
+            setFieldsValue({ totalPrice: Number(price).toFixed(2)});
             data = {
               pkRecipe: item.pkRecipe,
               recipeName: item.recipeName,
@@ -98,29 +97,28 @@ const list = ({
             result[item.pkRecipe] = data;
           }}
         />,
-        <Input
-          id={item.pkRecipe}
-          type={Text}
-          style={inputStyle}
-          disabled
-          defaultValue="0"
-        />,
+            <Input
+              type={Text}
+              style={inputStyle}
+              value={result[item.pkRecipe] ? (result[item.pkRecipe].recipeCount || 0) : 0}
+              disabled
+            />,
         <Button
           type="primary"
           size="small"
           shape="circle"
           icon="plus"
           onClick={() => {
-            count = Number(document.getElementById(item.pkRecipe).value);
-            totalPrice = Number(getFieldValue("totalPrice"));
+            const {totalPrice} = getFieldsValue();
+            count = result[item.pkRecipe] ? (result[item.pkRecipe].recipeCount || 0) : 0;
+            price = Number(totalPrice).toFixed(2);
             if (count >= 99) {
               count = 99;
             } else {
               count = count + 1;
-              totalPrice = totalPrice + Number(item.recipePrice);
+              price = Number(price) + Number(item.recipePrice);
             }
-            document.getElementById(item.pkRecipe).value = Number(count);
-            setFieldsValue({ totalPrice: Number(totalPrice).toFixed(2) });
+            setFieldsValue({ totalPrice: Number(price).toFixed(2)});
             data = {
               pkRecipe: item.pkRecipe,
               recipeName: item.recipeName,
@@ -161,7 +159,7 @@ const list = ({
         tab={item.categoryName}
         key={item.pkCategory}
       >
-        {loopCard(item.recipes)}
+        {loopCard(item.recipes)} 
       </TabPane>
     ));
 
@@ -187,7 +185,7 @@ const list = ({
           <Form layout="horizontal">
             <FormItem>
               {getFieldDecorator("totalPrice", {
-                initialValue: totalPrice
+                initialValue: price
               })(
                 <InputNumber
                   className={styles.orderInput}

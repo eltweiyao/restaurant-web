@@ -248,7 +248,6 @@ const modal = ({
       originalPrice: Number(originalPrice).toFixed(2),
       materialPrices: materialPrices
     };
-    console.log(fields);
     setFieldsValue(fields);
   };
   const handleCancel = () => {

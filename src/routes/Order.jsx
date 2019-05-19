@@ -15,7 +15,7 @@ const Order = ({ cloudState, dispatch }) => {
     loading: loading["order/query"],
     dataList,
     result,
-    totalPrice: 0,
+    price: 0,
     onConfirm(result) {
       dispatch({
         type: "order/createOrder",
