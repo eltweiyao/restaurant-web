@@ -7,6 +7,13 @@ export async function enter(params) {
     body: params
   });
 }
+// 登录接口
+export async function register(params) {
+  return request("/api/auth/register ", {
+    method: "post",
+    body: params
+  });
+}
 // 登出接口
 export async function logout(params) {
   return request("/api/auth/logout", {

@@ -1,28 +1,27 @@
 import React, { PropTypes } from "react";
 import { connect } from "dva";
-import LoginInfo from "../components/Login/page";
+import LoginInfo from "../components/Register/page";
 import { routerRedux } from 'dva/router';
 
 
-const Login = ({ cloudState, dispatch }) => {
-  const { username, password } = cloudState.login;
+const Register = ({ cloudState, dispatch }) => {
+  // const { username, password } = cloudState.register;
   const loading = cloudState.loading.effects;
   const loginInfo = {
-    loading: loading["login/login"],
-    username,
-    password,
-    onPage(route){
+    loading: loading["register/register"],
+    onPage(){
       dispatch(
-        routerRedux.push("/register"),
+        routerRedux.push("/login"),
       );
-      return true;
     },
-    onLogin(values) {
+    onRegister(values) {
+      console.log(values);
       dispatch({
-        type: "login/login",
+        type: "register/register",
         payload: {
           account: values.username,
-          password: values.password
+          password: values.password,
+          companyName: values.companyName
         }
       });
     }
@@ -34,7 +33,7 @@ const Login = ({ cloudState, dispatch }) => {
   );
 };
 
-Login.propTypes = {
+Register.propTypes = {
   cloudState: PropTypes.object,
   dispatch: PropTypes.func
 };
@@ -43,4 +42,4 @@ function mapStateToProps(cloudState) {
   return { cloudState };
 }
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(Register);

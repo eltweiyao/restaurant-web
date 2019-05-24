@@ -1,12 +1,13 @@
 import modelExtend from "dva-model-extend";
 import { routerRedux } from "dva/router";
 import { parse } from "qs";
-import { enter } from "../services/login";
-import { saveSession, toStr } from "../utils/";
+import { register } from "../services/login";
+import { saveSession, toStr } from "../utils";
 import { model } from "./common";
+import { message } from "antd";
 
 export default modelExtend(model, {
-  namespace: "login",
+  namespace: "register",
   state: {
     id: "",
     deleteFlag: "",
@@ -16,56 +17,15 @@ export default modelExtend(model, {
   subscriptions: {},
   effects: {
     // 登陆
-    *login({ payload }, { call, put }) {
-      const res = yield call(enter, parse(payload));
-      const { code, data } = res.data;
+    *register({ payload }, { call, put }) {
+      const res = yield call(register, parse(payload));
+      const { code } = res.data;
       if (code === "200") {
-        // yield put({
-        //   type: 'querySuccess',
-        //   payload: {
-        //     deleteFlag: data.deleteFlag,
-        //     username: data.username,
-        //     password: data.password,
-        //     loginId: data.id,
-        //   },
-        // });
-        saveSession("pkCompany", data.pkCompany);
-        saveSession("companyName", data.companyName);
-        saveSession("accountType", data.accountType);
-        saveSession("storeName", data.storeName);
-        saveSession("account", data.account);
-        yield put({
-          type: "queryMenu",
-          payload: {
-            accountType: data.accountType
-          }
-        });
-        if (data.accountType === 1) {
-          yield put(routerRedux.push("/dashboard"));
-        } else if(data.accountType === 2) {
-          yield put(routerRedux.push("/order"));
-        } else {
-          yield put(routerRedux.push("/approval"))
-        }
+        message.success("注册成功,请联系管理员审核账户");
       }
-    },
-    *register({payload},{put}){
-
-      yield put(routerRedux.push("/register"));
     },
     *queryMenu({ payload }, { put }) {
       const { accountType } = payload;
-      const touristData = [
-      {
-        id: "qustion",
-        bpid: "",
-        mpid: "",
-        name: "审核应用",
-        icon: "question",
-        route: "/approval",
-        menu_sort: "1"
-      }
-    ];
       const userData = [
         {
           id: "orderManager",
@@ -175,10 +135,8 @@ export default modelExtend(model, {
       let data;
       if (accountType === 1) {
         data = adminData;
-      } else if (accountType === 2) {
-        data = userData;
       } else {
-        data = touristData;
+        data = userData;
       }
       const menuData = data.filter(
         item => item.mpid !== "-1" && item.mpid !== "-2" && item.mpid !== "-3"

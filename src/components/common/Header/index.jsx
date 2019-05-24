@@ -36,7 +36,7 @@ const Header = ({ logout, switchSider, siderFold }) => {
               <span>
                 {getSession("accountType") === "1"
                   ? getSession("companyName")
-                  : getSession("companyName") + "  " + getSession("storeName")}
+                  : (getSession("accountType") === "2" ? getSession("companyName") + "  " + getSession("storeName") : getSession("companyName") + "       " + (getSession("accountType") === "4" ? "" : "未授权"))}
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Icon type="user" />
                 {getSession("account")}

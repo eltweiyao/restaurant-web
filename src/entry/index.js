@@ -27,6 +27,8 @@ app.model(require("../models/dishMenu"));
 app.model(require("../models/store"));
 app.model(require("../models/order"));
 app.model(require("../models/dashboard"));
+app.model(require("../models/register"));
+app.model(require("../models/approval"));
 
 // 4. Router
 app.router(require("../routes"));

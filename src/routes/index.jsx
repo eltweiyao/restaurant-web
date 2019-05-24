@@ -13,12 +13,22 @@ import DishMenu from "./DishMenu";
 import Store from "./Store";
 import Order from "./Order";
 import Dashboard from "./Dashboard";
+import Register from "./Register";
+import Approval from "./Approval";
 
 const Router = ({ history, app }) => {
   const routes = [
     {
       path: "/login",
       component: Login
+    },
+    {
+      path: "/register",
+      component: Register
+    },
+    {
+      path: "/approval",
+      component: Approval
     },
     {
       path: "/materialUnit",

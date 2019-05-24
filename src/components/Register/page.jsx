@@ -9,16 +9,24 @@ const page = ({
   loading,
   username,
   password,
-  onLogin,
+  onRegister,
   onPage,
-  form: { getFieldDecorator, validateFields }
+  form: { getFieldDecorator, validateFields, getFieldsValue, getFieldValue}
 }) => {
   const handleSubmit = () => {
     validateFields({ force: true }, (err, values) => {
       if (!err) {
-        onLogin(values);
+          onRegister(values);
       }
     });
+  };
+  const passwordValidator = (rule, value, callback) => {
+    if (value && value !== getFieldValue('password')) {
+        callback('两次输入不一致！')
+    }
+
+    // 必须总是返回一个 callback，否则 validateFields 无法响应
+    callback();
   };
   return (
     <div className={styles.form}>
@@ -45,12 +53,39 @@ const page = ({
           )}
         </FormItem>
         <FormItem>
+        {getFieldDecorator("companyName", {
+            rules: [
+              {
+                required: true,
+                message: "请输入企业名称"
+              },
+              {
+                whitespace: true,
+                message: "不能只输入空格"
+              },
+              {
+                max: 50,
+                message: "最多输入50个字"
+              }
+            ]
+          })(
+            <Input
+              onPressEnter={handleSubmit}
+              size="large"
+              placeholder="企业名称"
+            />
+          )}
+        </FormItem>
+        <FormItem>
           {getFieldDecorator("password", {
             initialValue: password,
             rules: [
               {
                 required: true,
                 message: "请输入密码"
+              },
+              {
+                
               }
             ]
           })(
@@ -62,6 +97,27 @@ const page = ({
             />
           )}
         </FormItem>
+        <FormItem>
+          {getFieldDecorator("confirm", {
+            initialValue: password,
+            rules: [
+              {
+                required: true,
+                message: "请确认密码"
+              },
+              {
+                validator: passwordValidator
+              }
+            ]
+          })(
+            <Input
+              onPressEnter={handleSubmit}
+              size="large"
+              type="password"
+              placeholder="确认密码"
+            />
+          )}
+        </FormItem>
         <Row>
           <FormItem>
             <Button
@@ -70,13 +126,13 @@ const page = ({
               onClick={handleSubmit}
               loading={loading}
             >
-              登录
+              注册
             </Button>
           </FormItem>
           <Button
               type="link"
-              onClick={() =>onPage('register')}
-              >注册</Button>
+              onClick={() => onPage()}
+              >返回</Button>
           <p>
             <span>{config.footerText}</span>
           </p>
