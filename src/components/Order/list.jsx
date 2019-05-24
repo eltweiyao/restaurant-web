@@ -48,7 +48,6 @@ const list = ({
     height: "30px"
   };
   const tabPaneStyle = {
-    height: "100%",
     overflow: "auto"
   };
   const inputStyle = {
@@ -97,12 +96,12 @@ const list = ({
             result[item.pkRecipe] = data;
           }}
         />,
-            <Input
-              type={Text}
-              style={inputStyle}
-              value={result[item.pkRecipe] ? (result[item.pkRecipe].recipeCount || 0) : 0}
-              disabled
-            />,
+        <Input
+          type={Text}
+          style={inputStyle}
+          value={result[item.pkRecipe] ? (result[item.pkRecipe].recipeCount || 0) : 0}
+          disabled
+        />,
         <Button
           type="primary"
           size="small"

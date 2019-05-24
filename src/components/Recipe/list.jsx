@@ -20,7 +20,6 @@ const list = ({
   onEditMaterial,
   onDeleteRecipe
 }) => {
-  console.log("accountType", accountType);
   const expandedRowRender = record => {
 
     const columns =

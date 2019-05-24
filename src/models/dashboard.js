@@ -169,7 +169,6 @@ export default modelExtend(model, {
     setup({ dispatch, history }) {
       history.listen(location => {
         if (location.pathname === "/dashboard") {
-          console.log("start");
           const params = {
             dateLevel: Number(location.query.frontPageQueryType || 1)
           };

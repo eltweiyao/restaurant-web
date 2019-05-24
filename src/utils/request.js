@@ -37,7 +37,6 @@ export default async function request(url, options) {
     newUrl += `?${stringify(params)}`;
   }
   const response = await fetch(newUrl, responseBody);
-
   if (response.status === 302) {
     message.error("未获取到当前登录人权限信息！");
     window.location = `${location.origin}/index.html#/login`;
@@ -49,7 +48,6 @@ export default async function request(url, options) {
       }
     };
   }
-
   const data = await response.json();
   if (data.code !== "10000" && data.code !== "200") {
     message.error(data.msg);

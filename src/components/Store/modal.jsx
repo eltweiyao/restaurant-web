@@ -9,7 +9,7 @@ import { Modal, Form, Input, Select, Cascader } from "antd";
 import city from "../../utils/city";
 
 const FormItem = Form.Item;
-const { Text } = Input;
+const { Text, Password } = Input;
 
 const modal = ({
   loading,
@@ -205,8 +205,8 @@ const modal = ({
               }
             ]
           })(
-            <Input
-              type={Text}
+            <Password
+              visibilityToggle={true}
               className="font12"
               style={{ width: "100%" }}
               placeholder="请输入密码"
