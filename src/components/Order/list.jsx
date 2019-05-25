@@ -61,6 +61,7 @@ const list = ({
       }
     }
     onConfirm(data);
+    setFieldsValue({ totalPrice: 0 });
     for (var key in result) {
       document.getElementById(key).value = 0;
     }
